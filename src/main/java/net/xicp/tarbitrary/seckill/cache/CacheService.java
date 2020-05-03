@@ -31,4 +31,12 @@ public interface CacheService {
      * @return
      */
    public boolean exists(KeyPrefix prefix, String key);
+
+    /**
+     *
+     * @param prefix
+     * @param key
+     * @return
+     */
+   public boolean delete(KeyPrefix prefix, String key);
 }

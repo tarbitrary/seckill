@@ -20,5 +20,8 @@ public abstract class BaseKeyPrefix implements KeyPrefix {
         this.keyPrefix = keyPrefix;
     }
 
-
+    @Override
+    public String buildKey(String key) {
+        return getKeyPrefix() + ":" + key;
+    }
 }

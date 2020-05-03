@@ -12,4 +12,6 @@ public interface KeyPrefix {
      * @return
      */
     String getPrefix();
+
+    String buildKey(String key);
 }
