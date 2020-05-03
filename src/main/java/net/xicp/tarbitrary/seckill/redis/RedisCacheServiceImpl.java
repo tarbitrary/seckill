@@ -96,6 +96,7 @@ public class RedisCacheServiceImpl implements CacheService {
         Jedis resource = null;
 
         try {
+            resource = jedisPool.getResource();
             final String realKey =
                     prefix.buildKey(key);
             final String sResult = resource.get(realKey);

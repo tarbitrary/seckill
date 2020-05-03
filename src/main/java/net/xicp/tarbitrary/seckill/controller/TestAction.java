@@ -1,5 +1,7 @@
 package net.xicp.tarbitrary.seckill.controller;
 
+import net.xicp.tarbitrary.seckill.cache.CacheService;
+import net.xicp.tarbitrary.seckill.cache.SeckillKey;
 import net.xicp.tarbitrary.seckill.domain.Users;
 import net.xicp.tarbitrary.seckill.result.Result;
 import net.xicp.tarbitrary.seckill.service.UserService;
@@ -16,6 +18,9 @@ public class TestAction {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CacheService cacheService;
+
     @RequestMapping(path = "/hello")
     public HashMap<String, String> test() {
         final HashMap<String, String> stringStringHashMap = new HashMap<>();
@@ -27,8 +32,20 @@ public class TestAction {
     public String userAdd() {
         final Users users = new Users();
         users.setName("tarbitrary");
+
+        cacheService.set(SeckillKey.key1, "user", users);
+
         final int save = userService.save(users);
         return "save success";
+    }
+
+    @RequestMapping(path = "/user/getcache")
+    public Users userGet() {
+
+
+        final Users users = cacheService.get(SeckillKey.key1, "user", Users.class);
+
+        return users;
     }
 
     @RequestMapping(path = "/user/{id}")

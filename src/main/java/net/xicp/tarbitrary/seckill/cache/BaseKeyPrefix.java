@@ -24,4 +24,14 @@ public abstract class BaseKeyPrefix implements KeyPrefix {
     public String buildKey(String key) {
         return getKeyPrefix() + ":" + key;
     }
+
+    @Override
+    public int expireSeconds() {
+        return getExpireSeconds();
+    }
+
+    @Override
+    public String getPrefix() {
+        return getKeyPrefix();
+    }
 }
