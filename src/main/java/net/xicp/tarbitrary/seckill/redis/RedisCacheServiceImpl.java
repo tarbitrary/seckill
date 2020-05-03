@@ -180,4 +180,36 @@ public class RedisCacheServiceImpl implements CacheService {
         return PRIMITIVE_TYPE_WRAPPED_SET.contains(t);
     }
 
+    public Long incr(KeyPrefix prefix, String key) {
+        Jedis resource = null;
+
+        try {
+            resource = jedisPool.getResource();
+
+            final String realKey = prefix.buildKey(key);
+            final Long incr = resource.incr(realKey);
+            return incr;
+
+        } finally {
+            returnToPool(resource);
+        }
+
+    }
+
+    public Long decr(KeyPrefix prefix, String key) {
+        Jedis resource = null;
+
+        try {
+            resource = jedisPool.getResource();
+
+            final String realKey = prefix.buildKey(key);
+            final Long decr = resource.decr(realKey);
+            return decr;
+
+        } finally {
+            returnToPool(resource);
+        }
+
+    }
+
 }
