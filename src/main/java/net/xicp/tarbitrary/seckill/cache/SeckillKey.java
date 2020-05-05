@@ -9,4 +9,5 @@ public class SeckillKey extends BaseKeyPrefix {
 
 
     public static final SeckillKey key1 = new SeckillKey(60, "seckill");
+    public static final SeckillKey USER_INFO = new SeckillKey(60 * 30, "userinfo");
 }

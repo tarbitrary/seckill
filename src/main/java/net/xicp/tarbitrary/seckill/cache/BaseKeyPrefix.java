@@ -16,13 +16,13 @@ public abstract class BaseKeyPrefix implements KeyPrefix {
     }
 
     public BaseKeyPrefix(int expireSeconds, String keyPrefix){
-        this.expireSeconds = 0;
+        this.expireSeconds = expireSeconds;
         this.keyPrefix = keyPrefix;
     }
 
     @Override
     public String buildKey(String key) {
-        return getKeyPrefix() + ":" + key;
+        return getPrefix() + ":" + key;
     }
 
     @Override
