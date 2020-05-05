@@ -11,5 +11,7 @@ public interface TradeUserService {
 
      TradeUser getUserByToken(String token);
 
+     boolean expireExtend(String token, TradeUser user);
+
      String login(LoginVO user);
 }

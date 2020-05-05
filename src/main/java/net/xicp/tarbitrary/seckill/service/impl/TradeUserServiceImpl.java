@@ -37,6 +37,12 @@ public class TradeUserServiceImpl implements TradeUserService {
     }
 
     @Override
+    public boolean expireExtend(String token, TradeUser user) {
+        final boolean set = cacheService.set(SeckillKey.USER_INFO, token, user);
+        return set;
+    }
+
+    @Override
     public String login(LoginVO user) {
         Assert.notNull(user, "用户信息不允许为空");
         final TradeUser userById = getUserById(user.getMobile());
