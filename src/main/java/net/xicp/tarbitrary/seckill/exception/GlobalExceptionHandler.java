@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author tarbitrary
@@ -67,7 +66,9 @@ public class GlobalExceptionHandler {
 
             ObjectError error = errors.get(0);
             //String msg = error.getDefaultMessage();
-            String msg = messageSource.getMessage(error.getCode(), error.getArguments(), error.getDefaultMessage(), Locale.ENGLISH);
+            //  final String message = messageSource.getMessage(error.getCode(), error.getArguments(), Locale.CHINESE);
+            //request.getLocale();
+            String msg = messageSource.getMessage(error.getDefaultMessage(), error.getArguments(), error.getDefaultMessage(), request.getLocale());
             result = Result.error(CodeMsg.BIND_ERROR.fillArgs(msg));
         }
 
