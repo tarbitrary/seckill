@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Validator;
 
 @Controller
 @Slf4j
@@ -21,6 +22,9 @@ public class LoginAction {
 
     @Autowired
     private TradeUserService tradeUserService;
+
+    @Autowired
+    private Validator validator;
 
     @GetMapping("/login")
     public String login() {

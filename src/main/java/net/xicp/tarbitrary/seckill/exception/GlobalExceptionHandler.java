@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import net.xicp.tarbitrary.seckill.result.CodeMsg;
 import net.xicp.tarbitrary.seckill.result.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author tarbitrary
@@ -22,9 +25,13 @@ import java.util.List;
 @Slf4j
 public class GlobalExceptionHandler {
 
+    @Autowired
+    private MessageSource messageSource;
+
     @ExceptionHandler(value = Exception.class)
     public String doExceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception e) {
         try {
+            log.info("simple handler");
             if (isAjaxRequest(request)) {
                 ajaxHandle(request, response, e);
                 return null;
@@ -57,8 +64,10 @@ public class GlobalExceptionHandler {
         } else if (exception instanceof BindException) {
             BindException ex = (BindException) exception;
             List<ObjectError> errors = ex.getAllErrors();
+
             ObjectError error = errors.get(0);
-            String msg = error.getDefaultMessage();
+            //String msg = error.getDefaultMessage();
+            String msg = messageSource.getMessage(error.getCode(), error.getArguments(), error.getDefaultMessage(), Locale.ENGLISH);
             result = Result.error(CodeMsg.BIND_ERROR.fillArgs(msg));
         }
 
