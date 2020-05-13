@@ -1,5 +1,6 @@
 package net.xicp.tarbitrary.seckill.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import net.xicp.tarbitrary.seckill.cache.CacheService;
 import net.xicp.tarbitrary.seckill.cache.SeckillKey;
 import net.xicp.tarbitrary.seckill.dao.TradeUserDao;
@@ -14,10 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import java.util.Objects;
 
 @Service
+@Slf4j
 public class TradeUserServiceImpl implements TradeUserService {
     @Resource
     private TradeUserDao tradeUserDao;
@@ -57,5 +60,11 @@ public class TradeUserServiceImpl implements TradeUserService {
         }
 
         throw new GlobalException(CodeMsg.PASSWORD_ERROR);
+    }
+
+    @PreDestroy
+    public void doClean() {
+        log.info("what happened!");
+        System.out.println("do clean!");
     }
 }

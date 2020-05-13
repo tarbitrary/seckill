@@ -1,0 +1,14 @@
+package net.xicp.tarbitrary.seckill.vo;
+
+import lombok.Data;
+import net.xicp.tarbitrary.seckill.domain.Goods;
+
+import java.util.Date;
+
+@Data
+public class GoodsVO extends Goods {
+    private Double seckillPrice;
+    private Integer stockCount;
+    private Date startDate;
+    private Date endDate;
+}
