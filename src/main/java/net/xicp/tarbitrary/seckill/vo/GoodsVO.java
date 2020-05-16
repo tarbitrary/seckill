@@ -11,4 +11,8 @@ public class GoodsVO extends Goods {
     private Integer stockCount;
     private Date startDate;
     private Date endDate;
+
+    private long startTime;
+
+    private long endTime;
 }

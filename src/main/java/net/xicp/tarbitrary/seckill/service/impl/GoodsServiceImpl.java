@@ -20,4 +20,9 @@ public class GoodsServiceImpl implements GoodsService {
     public List<GoodsVO> queryForList() {
         return goodsDao.queryForList();
     }
+
+    @Override
+    public GoodsVO getGoodsById(long goodsId) {
+        return goodsDao.getGoodsById(goodsId);
+    }
 }

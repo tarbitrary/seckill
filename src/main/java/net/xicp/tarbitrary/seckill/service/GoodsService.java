@@ -8,5 +8,7 @@ import java.util.List;
  * @author tarbitrary
  */
 public interface GoodsService {
-    public List<GoodsVO> queryForList();
+    List<GoodsVO> queryForList();
+
+    GoodsVO getGoodsById(long goodsId);
 }
