@@ -27,6 +27,7 @@ public class RedisCacheServiceImpl implements CacheService {
         {
             add(Byte.class);
             add(Short.class);
+            add(Integer.class);
             add(Long.class);
             add(Float.class);
             add(Double.class);
@@ -180,6 +181,7 @@ public class RedisCacheServiceImpl implements CacheService {
         return PRIMITIVE_TYPE_WRAPPED_SET.contains(t);
     }
 
+    @Override
     public Long incr(KeyPrefix prefix, String key) {
         Jedis resource = null;
 
@@ -196,6 +198,7 @@ public class RedisCacheServiceImpl implements CacheService {
 
     }
 
+    @Override
     public Long decr(KeyPrefix prefix, String key) {
         Jedis resource = null;
 

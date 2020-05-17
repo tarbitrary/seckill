@@ -12,7 +12,7 @@ public interface CacheService {
      * @param <T>
      * @return
      */
-   public <T> boolean set(KeyPrefix prefix, String key, T value);
+    public <T> boolean set(KeyPrefix prefix, String key, T value);
 
     /**
      *
@@ -22,7 +22,7 @@ public interface CacheService {
      * @param <T>
      * @return
      */
-   public <T> T get(KeyPrefix prefix, String key, Class<T> t);
+    public <T> T get(KeyPrefix prefix, String key, Class<T> t);
 
     /**
      *
@@ -30,13 +30,16 @@ public interface CacheService {
      * @param key
      * @return
      */
-   public boolean exists(KeyPrefix prefix, String key);
+    public boolean exists(KeyPrefix prefix, String key);
 
     /**
-     *
      * @param prefix
      * @param key
      * @return
      */
-   public boolean delete(KeyPrefix prefix, String key);
+    public boolean delete(KeyPrefix prefix, String key);
+
+    Long incr(KeyPrefix prefix, String key);
+
+    Long decr(KeyPrefix prefix, String key);
 }
