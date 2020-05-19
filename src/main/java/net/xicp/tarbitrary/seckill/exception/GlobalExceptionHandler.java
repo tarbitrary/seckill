@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author tarbitrary
@@ -36,15 +37,31 @@ public class GlobalExceptionHandler {
                 return null;
             }
 
+            if (noLogin(e)) {
+                return "/user/login";
+            }
+
             webHandle(request, response, e);
         } catch (Exception ex) {
-
+            log.error("exception handler error, error info ", e);
         } finally {
 
         }
 
 
         return "/error";
+    }
+
+    private boolean noLogin(Exception e) {
+        if (e instanceof GlobalException) {
+            GlobalException ge = (GlobalException) e;
+            if (Objects.equals(CodeMsg.SESSION_ERROR, ge.getCm())) {
+                return true;
+            }
+        }
+
+        return false;
+
     }
 
     private void webHandle(HttpServletRequest request, HttpServletResponse response, Exception e) {

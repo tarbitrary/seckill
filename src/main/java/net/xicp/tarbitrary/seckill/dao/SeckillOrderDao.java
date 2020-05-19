@@ -63,4 +63,11 @@ public interface SeckillOrderDao {
      */
     int deleteById(Long id);
 
+    /**
+     * get skill order by userId and goodsId
+     *
+     * @return
+     */
+    SeckillOrder getOrderByUserIdAndGoodsId(@Param("userId") Long userId, @Param("goodsId") Long goodsId);
+
 }

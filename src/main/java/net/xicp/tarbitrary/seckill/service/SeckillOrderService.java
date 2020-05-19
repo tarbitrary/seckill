@@ -53,4 +53,5 @@ public interface SeckillOrderService {
      */
     boolean deleteById(Long id);
 
+    SeckillOrder querySeckillOrderByUserIdAndGoodsId(Long id, long goodsId);
 }

@@ -1,8 +1,13 @@
 package net.xicp.tarbitrary.seckill.controller;
 
+import net.xicp.tarbitrary.seckill.annotations.AccessLimit;
 import net.xicp.tarbitrary.seckill.domain.SeckillOrder;
 import net.xicp.tarbitrary.seckill.domain.TradeUser;
+import net.xicp.tarbitrary.seckill.result.CodeMsg;
+import net.xicp.tarbitrary.seckill.service.GoodsService;
 import net.xicp.tarbitrary.seckill.service.SeckillOrderService;
+import net.xicp.tarbitrary.seckill.vo.GoodsVO;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +30,11 @@ public class SeckillOrderController {
     @Resource
     private SeckillOrderService seckillOrderService;
 
+
+    @Resource
+    private GoodsService goodsService;
+
+
     /**
      * 通过主键查询单条数据
      *
@@ -36,7 +46,25 @@ public class SeckillOrderController {
         return this.seckillOrderService.queryById(id);
     }
 
-    public String doSeckill(TradeUser tradeUser, @RequestParam("goodsId") long goodsId) {
+    @RequestMapping("/doSeckill")
+    @AccessLimit(seconds = 10, maxCount = 100)
+    public String doSeckill(TradeUser tradeUser, @RequestParam("goodsId") long goodsId,
+                            Model model) {
+        //seckillOrderService.doSeckKill(goodsId);
+
+        final GoodsVO goodsById = goodsService.getGoodsById(goodsId);
+        if (null == goodsById) {
+            model.addAttribute("errorMsg", CodeMsg.ORDER_NOT_EXIST);
+            return "/goods_list/seckill_fail";
+        }
+
+        if (goodsById.getGoodsStock() <= 0) {
+            model.addAttribute("errorMsg", CodeMsg.MIAOSHA_FAIL);
+            return "/goods_list/seckill_fail";
+        }
+
+        final SeckillOrder seckillOrder = seckillOrderService.querySeckillOrderByUserIdAndGoodsId(tradeUser.getId(), goodsId);
+
 
         return "/goods_list/list";
 

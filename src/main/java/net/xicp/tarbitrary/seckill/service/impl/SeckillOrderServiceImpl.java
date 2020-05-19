@@ -77,4 +77,9 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
     public boolean deleteById(Long id) {
         return this.seckillOrderDao.deleteById(id) > 0;
     }
+
+    @Override
+    public SeckillOrder querySeckillOrderByUserIdAndGoodsId(Long id, long goodsId) {
+        return seckillOrderDao.getOrderByUserIdAndGoodsId(id, goodsId);
+    }
 }

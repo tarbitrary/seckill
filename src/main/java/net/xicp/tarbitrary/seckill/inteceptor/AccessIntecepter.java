@@ -52,6 +52,8 @@ public class AccessIntecepter implements HandlerInterceptor {
             return true;
         }
 
+        log.info("pre handle {}", request.getRequestURI());
+
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         final Method method = handlerMethod.getMethod();
 
@@ -161,6 +163,6 @@ public class AccessIntecepter implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        log.info("post handler invoke");
+        log.info("post handler invoke {}, {}", request.getRequestURI(), handler);
     }
 }
