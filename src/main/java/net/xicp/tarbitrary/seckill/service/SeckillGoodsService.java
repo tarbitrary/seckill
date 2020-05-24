@@ -53,4 +53,5 @@ public interface SeckillGoodsService {
      */
     boolean deleteById(Long id);
 
+    int reduceStock(Long id, Integer num);
 }

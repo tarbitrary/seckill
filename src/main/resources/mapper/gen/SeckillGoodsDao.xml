@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.xicp.tarbitrary.seckill.dao.SeckillGoodsDao">
 
-    <resultMap type="net.xicp.tarbitrary.seckill.entity.SeckillGoods" id="SeckillGoodsMap">
+    <resultMap type="net.xicp.tarbitrary.seckill.domain.SeckillGoods" id="SeckillGoodsMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="goodsId" column="goods_id" jdbcType="INTEGER"/>
         <result property="seckillPrice" column="seckill_price" jdbcType="NUMERIC"/>

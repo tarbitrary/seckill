@@ -1,6 +1,7 @@
 package net.xicp.tarbitrary.seckill.controller;
 
 import net.xicp.tarbitrary.seckill.annotations.AccessLimit;
+import net.xicp.tarbitrary.seckill.domain.OrderInfo;
 import net.xicp.tarbitrary.seckill.domain.SeckillOrder;
 import net.xicp.tarbitrary.seckill.domain.TradeUser;
 import net.xicp.tarbitrary.seckill.result.CodeMsg;
@@ -65,6 +66,13 @@ public class SeckillOrderController {
 
         final SeckillOrder seckillOrder = seckillOrderService.querySeckillOrderByUserIdAndGoodsId(tradeUser.getId(), goodsId);
 
+        if (null != seckillOrder) {
+            model.addAttribute("errorMsg", CodeMsg.REPEATE_MIAOSHA);
+            return "/goods_list/seckill_fail";
+        }
+
+        final OrderInfo orderInfo = seckillOrderService.doSeckill(tradeUser, goodsById);
+        model.addAttribute("orderInfo", orderInfo);
 
         return "/goods_list/list";
 

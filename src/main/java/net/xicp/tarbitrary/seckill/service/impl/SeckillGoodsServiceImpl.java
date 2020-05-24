@@ -76,4 +76,10 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
     public boolean deleteById(Long id) {
         return this.seckillGoodsDao.deleteById(id) > 0;
     }
+
+    @Override
+    public int reduceStock(Long id, Integer num) {
+        return seckillGoodsDao.reduceStock(id, num);
+
+    }
 }

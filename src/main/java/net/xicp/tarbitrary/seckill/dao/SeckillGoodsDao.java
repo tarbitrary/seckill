@@ -2,6 +2,7 @@ package net.xicp.tarbitrary.seckill.dao;
 
 import net.xicp.tarbitrary.seckill.domain.SeckillGoods;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -62,5 +63,15 @@ public interface SeckillGoodsDao {
      * @return 影响行数
      */
     int deleteById(Long id);
+
+    /**
+     * reduce stock
+     *
+     * @param id  id
+     * @param num reduce stock num
+     * @return
+     */
+    @Update("update seckill_goods set stock_count = stock_count - #{num} where id = #{id} and stock_count >= #{num}")
+    int reduceStock(@Param("id") Long id, @Param("num") int num);
 
 }

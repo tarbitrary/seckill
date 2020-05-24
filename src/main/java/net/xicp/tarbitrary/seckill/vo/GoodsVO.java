@@ -7,6 +7,8 @@ import java.util.Date;
 
 @Data
 public class GoodsVO extends Goods {
+
+    private Long seckillGoodsId;
     private Double seckillPrice;
     private Integer stockCount;
     private Date startDate;

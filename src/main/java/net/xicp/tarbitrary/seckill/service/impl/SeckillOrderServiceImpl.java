@@ -1,11 +1,20 @@
 package net.xicp.tarbitrary.seckill.service.impl;
 
 import net.xicp.tarbitrary.seckill.dao.SeckillOrderDao;
+import net.xicp.tarbitrary.seckill.domain.OrderInfo;
 import net.xicp.tarbitrary.seckill.domain.SeckillOrder;
+import net.xicp.tarbitrary.seckill.domain.TradeUser;
+import net.xicp.tarbitrary.seckill.exception.GlobalException;
+import net.xicp.tarbitrary.seckill.result.CodeMsg;
+import net.xicp.tarbitrary.seckill.service.OrderInfoService;
+import net.xicp.tarbitrary.seckill.service.SeckillGoodsService;
 import net.xicp.tarbitrary.seckill.service.SeckillOrderService;
+import net.xicp.tarbitrary.seckill.vo.GoodsVO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,6 +27,12 @@ import java.util.List;
 public class SeckillOrderServiceImpl implements SeckillOrderService {
     @Resource
     private SeckillOrderDao seckillOrderDao;
+
+    @Resource
+    private OrderInfoService orderInfoService;
+
+    @Resource
+    private SeckillGoodsService seckillGoodsService;
 
     /**
      * 通过ID查询单条数据
@@ -79,7 +94,7 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
     }
 
     @Override
-    public SeckillOrder querySeckillOrderByUserIdAndGoodsId(Long id, long goodsId) {
+    public SeckillOrder querySeckillOrderByUserIdAndGoodsId(Long id, Long goodsId) {
         return seckillOrderDao.getOrderByUserIdAndGoodsId(id, goodsId);
     }
 }

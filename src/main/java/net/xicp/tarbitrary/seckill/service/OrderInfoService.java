@@ -1,19 +1,16 @@
 package net.xicp.tarbitrary.seckill.service;
 
 import net.xicp.tarbitrary.seckill.domain.OrderInfo;
-import net.xicp.tarbitrary.seckill.domain.SeckillOrder;
-import net.xicp.tarbitrary.seckill.domain.TradeUser;
-import net.xicp.tarbitrary.seckill.vo.GoodsVO;
 
 import java.util.List;
 
 /**
- * (SeckillOrder)表服务接口
+ * (OrderInfo)表服务接口
  *
  * @author tarbitrary
- * @since 2020-05-17 20:15:06
+ * @since 2020-05-24 16:02:32
  */
-public interface SeckillOrderService {
+public interface OrderInfoService {
 
     /**
      * 通过ID查询单条数据
@@ -21,7 +18,7 @@ public interface SeckillOrderService {
      * @param id 主键
      * @return 实例对象
      */
-    SeckillOrder queryById(Long id);
+    OrderInfo queryById(Long id);
 
     /**
      * 查询多条数据
@@ -30,23 +27,23 @@ public interface SeckillOrderService {
      * @param limit  查询条数
      * @return 对象列表
      */
-    List<SeckillOrder> queryAllByLimit(int offset, int limit);
+    List<OrderInfo> queryAllByLimit(int offset, int limit);
 
     /**
      * 新增数据
      *
-     * @param seckillOrder 实例对象
+     * @param orderInfo 实例对象
      * @return 实例对象
      */
-    SeckillOrder insert(SeckillOrder seckillOrder);
+    OrderInfo insert(OrderInfo orderInfo);
 
     /**
      * 修改数据
      *
-     * @param seckillOrder 实例对象
+     * @param orderInfo 实例对象
      * @return 实例对象
      */
-    SeckillOrder update(SeckillOrder seckillOrder);
+    OrderInfo update(OrderInfo orderInfo);
 
     /**
      * 通过主键删除数据
@@ -56,7 +53,4 @@ public interface SeckillOrderService {
      */
     boolean deleteById(Long id);
 
-    SeckillOrder querySeckillOrderByUserIdAndGoodsId(Long id, Long goodsId);
-
-    OrderInfo doSeckill(TradeUser user, GoodsVO goodsInfo);
 }

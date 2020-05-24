@@ -13,6 +13,6 @@ public interface GoodsDao {
     @SelectProvider(value = GoodsProvider.class, method = "queryForList")
     public List<GoodsVO> queryForList();
 
-    @Select("select t.*, g.seckill_price, g.stock_count, g.start_date, g.end_date from goods t left outer join seckill_goods g on t.id=g.goods_id where t.id=#{id}")
+    @Select("select t.*, g.id seckillGoodsId, g.seckill_price, g.stock_count, g.start_date, g.end_date from goods t left outer join seckill_goods g on t.id=g.goods_id where t.id=#{id}")
     public GoodsVO getGoodsById(long id);
 }
