@@ -8,11 +8,11 @@ import net.xicp.tarbitrary.seckill.result.CodeMsg;
 import net.xicp.tarbitrary.seckill.service.GoodsService;
 import net.xicp.tarbitrary.seckill.service.SeckillOrderService;
 import net.xicp.tarbitrary.seckill.vo.GoodsVO;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -22,7 +22,7 @@ import javax.annotation.Resource;
  * @author tarbitrary
  * @since 2020-05-17 20:15:08
  */
-@RestController
+@Controller
 @RequestMapping("seckillOrder")
 public class SeckillOrderController {
     /**
@@ -56,25 +56,26 @@ public class SeckillOrderController {
         final GoodsVO goodsById = goodsService.getGoodsById(goodsId);
         if (null == goodsById) {
             model.addAttribute("errorMsg", CodeMsg.ORDER_NOT_EXIST);
-            return "/goods_list/seckill_fail";
+            return "/order/seckill_fail";
         }
 
         if (goodsById.getGoodsStock() <= 0) {
             model.addAttribute("errorMsg", CodeMsg.MIAOSHA_FAIL);
-            return "/goods_list/seckill_fail";
+            return "/order/seckill_fail";
         }
 
         final SeckillOrder seckillOrder = seckillOrderService.querySeckillOrderByUserIdAndGoodsId(tradeUser.getId(), goodsId);
 
         if (null != seckillOrder) {
             model.addAttribute("errorMsg", CodeMsg.REPEATE_MIAOSHA);
-            return "/goods_list/seckill_fail";
+            return "/order/seckill_fail";
         }
 
         final OrderInfo orderInfo = seckillOrderService.doSeckill(tradeUser, goodsById);
         model.addAttribute("orderInfo", orderInfo);
+        model.addAttribute("goods", goodsById);
 
-        return "/goods_list/list";
+        return "/order/order_detail";
 
     }
 

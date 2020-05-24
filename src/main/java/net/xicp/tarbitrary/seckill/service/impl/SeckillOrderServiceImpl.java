@@ -97,4 +97,42 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
     public SeckillOrder querySeckillOrderByUserIdAndGoodsId(Long id, Long goodsId) {
         return seckillOrderDao.getOrderByUserIdAndGoodsId(id, goodsId);
     }
+
+    @Override
+    @Transactional
+    public OrderInfo doSeckill(TradeUser user, GoodsVO goodsInfo) {
+        //reduce sock
+        final int result = seckillGoodsService.reduceStock(goodsInfo.getSeckillGoodsId(), 1);
+        if (result <= 0) {
+            throw new GlobalException(CodeMsg.MIAO_SHA_OVER);
+        }
+
+        //persist order
+        OrderInfo orderInfo = buildOrderInfo(user, goodsInfo);
+        orderInfoService.insert(orderInfo);
+
+        //persist seckill order
+        SeckillOrder seckillOrder = new SeckillOrder();
+        seckillOrder.setGoodsId(goodsInfo.getId());
+        seckillOrder.setOrderId(orderInfo.getId());
+        seckillOrder.setUserId(user.getId());
+        seckillOrderDao.insert(seckillOrder);
+
+
+        return orderInfo;
+    }
+
+    private OrderInfo buildOrderInfo(TradeUser user, GoodsVO goodsInfo) {
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setGoodsCount(1);
+        orderInfo.setGoodsId(goodsInfo.getId());
+        orderInfo.setGoodsCount(1);
+        orderInfo.setGoodsName(goodsInfo.getGoodsName());
+        orderInfo.setPayDate(new Date());
+        orderInfo.setStatus(0);
+        orderInfo.setGoodsPrice(goodsInfo.getSeckillPrice());
+        orderInfo.setDeliveryAddrId(0L);
+        orderInfo.setUserId(user.getId());
+        return orderInfo;
+    }
 }
