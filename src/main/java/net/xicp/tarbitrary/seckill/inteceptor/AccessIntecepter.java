@@ -67,7 +67,7 @@ public class AccessIntecepter implements HandlerInterceptor {
             return true;
         }
 
-        String reqToken = (String) request.getAttribute(SysConstant.TOKEN);
+        String reqToken = (String) request.getParameter(SysConstant.TOKEN);
         String cookieToken = getCookieToken(request, response);
         String realToken = cookieToken != null ? cookieToken : reqToken;
 

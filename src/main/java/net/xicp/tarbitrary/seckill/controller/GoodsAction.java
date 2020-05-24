@@ -34,7 +34,7 @@ public class GoodsAction {
     private GoodsService goodsService;
 
     @GetMapping("/goods_list")
-    @AccessLimit(seconds = 100, maxCount = 5)
+    @AccessLimit(seconds = 100, maxCount = Integer.MAX_VALUE)
     public String goodsList(TradeUser tradeUser, HttpServletResponse response, Model model) {
         log.info("tradeuser:{}", JSON.toJSONString(tradeUser));
         //model.addAttribute("tradeUser", tradeUser);
