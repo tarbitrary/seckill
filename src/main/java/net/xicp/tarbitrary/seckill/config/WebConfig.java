@@ -1,6 +1,6 @@
 package net.xicp.tarbitrary.seckill.config;
 
-import net.xicp.tarbitrary.seckill.inteceptor.AccessIntecepter;
+import net.xicp.tarbitrary.seckill.inteceptor.AccessInterceptor;
 import net.xicp.tarbitrary.seckill.resolver.TradeUserResolver;
 import net.xicp.tarbitrary.seckill.service.TradeUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
     private TradeUserResolver tradeUserResolver;
 
     @Resource
-    private AccessIntecepter accessIntecepter;
+    private AccessInterceptor accessIntecepter;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
