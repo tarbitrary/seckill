@@ -9,6 +9,7 @@ import net.xicp.tarbitrary.seckill.domain.TradeUser;
 import net.xicp.tarbitrary.seckill.exception.GlobalException;
 import net.xicp.tarbitrary.seckill.result.CodeMsg;
 import net.xicp.tarbitrary.seckill.service.TradeUserService;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -29,6 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Slf4j
+@Order(1)
 public class AccessInterceptor implements HandlerInterceptor {
 
     private final ConcurrentHashMap<HandlerMethod, AccessLimit> ACCESS_MAP = new ConcurrentHashMap<HandlerMethod, AccessLimit>();

@@ -1,6 +1,7 @@
 package net.xicp.tarbitrary.seckill.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import net.xicp.tarbitrary.seckill.annotations.NoLogin;
 import net.xicp.tarbitrary.seckill.cache.SeckillKey;
 import net.xicp.tarbitrary.seckill.result.Result;
 import net.xicp.tarbitrary.seckill.service.TradeUserService;
@@ -27,12 +28,14 @@ public class LoginAction {
     private Validator validator;
 
     @GetMapping("/login")
+    @NoLogin
     public String login() {
         return "/user/login";
     }
 
     @PostMapping("/doLogin")
     @ResponseBody
+    @NoLogin
     public Result<String> doLogin(HttpServletResponse response, @Validated LoginVO loginVO) {
         log.info("user {} login", loginVO.getMobile());
         final String token = tradeUserService.login(loginVO);
