@@ -49,6 +49,15 @@ public class SeckillOrderController {
         return this.seckillOrderService.queryById(id);
     }
 
+    /**
+     * load 12
+     * tps 531
+     *
+     * @param tradeUser
+     * @param goodsId
+     * @param model
+     * @return
+     */
     @RequestMapping("/doSeckill")
     @AccessLimit(seconds = 10, maxCount = 100)
     public String doSeckill(TradeUser tradeUser, @RequestParam("goodsId") long goodsId,
