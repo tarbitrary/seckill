@@ -10,6 +10,7 @@ import net.xicp.tarbitrary.seckill.exception.GlobalException;
 import net.xicp.tarbitrary.seckill.result.CodeMsg;
 import net.xicp.tarbitrary.seckill.service.TradeUserService;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -26,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 @Slf4j
+@Order(1)
 public class LoginInterceptor implements HandlerInterceptor {
 
     private static final ConcurrentHashMap<HandlerMethod, NoLogin> NO_LOGIN_MAP = new ConcurrentHashMap<HandlerMethod, NoLogin>();
