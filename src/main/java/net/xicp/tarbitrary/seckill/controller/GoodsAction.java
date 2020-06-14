@@ -6,6 +6,7 @@ import net.xicp.tarbitrary.seckill.annotations.AccessLimit;
 import net.xicp.tarbitrary.seckill.cache.CacheService;
 import net.xicp.tarbitrary.seckill.cache.PageKey;
 import net.xicp.tarbitrary.seckill.domain.TradeUser;
+import net.xicp.tarbitrary.seckill.result.Result;
 import net.xicp.tarbitrary.seckill.service.GoodsService;
 import net.xicp.tarbitrary.seckill.service.TradeUserService;
 import net.xicp.tarbitrary.seckill.vo.GoodsDetailVO;
@@ -75,7 +76,7 @@ public class GoodsAction {
 //        return modelAndView;
     }
 
-    @RequestMapping(path = "/goods_detail/{goodsId}", produces = "text/html")
+    @RequestMapping(path = "/goods_detail1/{goodsId}", produces = "text/html")
     @ResponseBody
     public String goodsDetail(HttpServletRequest request, HttpServletResponse response,
                               Model model,
@@ -127,5 +128,40 @@ public class GoodsAction {
         }
 
         return process;
+    }
+
+
+    @RequestMapping(path = "/goods_detail/{goodsId}")
+    @ResponseBody
+    public Result<GoodsDetailVO> getGoodsDetail(HttpServletRequest request, HttpServletResponse response,
+                                                Model model,
+                                                TradeUser tradeUser,
+                                                @PathVariable("goodsId") long goodsId) {
+        final GoodsVO goodsById = goodsService.getGoodsById(goodsId);
+        final Date startDate = goodsById.getStartDate();
+        final Date endDate = goodsById.getEndDate();
+        final long startTime = startDate.getTime();
+        final long endTime =
+                endDate.getTime();
+        int seckillStatus, remainSeconds;
+        long now = System.currentTimeMillis();
+        if (now < startTime) {//秒杀还没开始，倒计时
+            seckillStatus = 0;
+            remainSeconds = (int) ((startTime - now) / 1000);
+        } else if (now > endTime) {//秒杀已经结束
+            seckillStatus = 2;
+            remainSeconds = -1;
+        } else {//秒杀进行中
+            seckillStatus = 1;
+            remainSeconds = 0;
+        }
+
+        final GoodsDetailVO goodsDetailVO = new GoodsDetailVO();
+        goodsDetailVO.setGoods(goodsById);
+        goodsDetailVO.setTradeUser(tradeUser);
+        goodsDetailVO.setRemainSeconds(remainSeconds);
+        goodsDetailVO.setSeckillStatus(seckillStatus);
+
+        return Result.success(goodsDetailVO);
     }
 }

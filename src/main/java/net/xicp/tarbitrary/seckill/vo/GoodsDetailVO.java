@@ -9,4 +9,8 @@ public class GoodsDetailVO {
 
     private TradeUser tradeUser;
 
+    private int remainSeconds;
+
+    private int seckillStatus;
+
 }

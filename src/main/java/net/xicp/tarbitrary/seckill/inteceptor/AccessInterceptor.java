@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Slf4j
-@Order(1)
+@Order(1000)
 public class AccessInterceptor implements HandlerInterceptor {
 
     private final ConcurrentHashMap<HandlerMethod, AccessLimit> ACCESS_MAP = new ConcurrentHashMap<HandlerMethod, AccessLimit>();
