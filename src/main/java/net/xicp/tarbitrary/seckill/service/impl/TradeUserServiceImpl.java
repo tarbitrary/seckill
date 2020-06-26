@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import java.util.Objects;
@@ -66,5 +67,10 @@ public class TradeUserServiceImpl implements TradeUserService {
     public void doClean() {
         log.info("what happened!");
         System.out.println("do clean!");
+    }
+
+    @PostConstruct
+    public void init() {
+        log.info("bean init");
     }
 }
