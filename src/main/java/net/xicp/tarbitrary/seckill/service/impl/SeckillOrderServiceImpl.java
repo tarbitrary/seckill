@@ -1,5 +1,6 @@
 package net.xicp.tarbitrary.seckill.service.impl;
 
+import net.xicp.tarbitrary.seckill.cache.init.GoodsInit;
 import net.xicp.tarbitrary.seckill.dao.SeckillOrderDao;
 import net.xicp.tarbitrary.seckill.domain.OrderInfo;
 import net.xicp.tarbitrary.seckill.domain.SeckillOrder;
@@ -33,6 +34,9 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
 
     @Resource
     private SeckillGoodsService seckillGoodsService;
+
+    @Resource
+    private GoodsInit goodsInit;
 
     /**
      * 通过ID查询单条数据
@@ -134,5 +138,44 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
         orderInfo.setDeliveryAddrId(0L);
         orderInfo.setUserId(user.getId());
         return orderInfo;
+    }
+
+    public long getSecKillResult(long userId, long goodsId) {
+        final SeckillOrder order = seckillOrderDao.getOrderByUserIdAndGoodsId(userId, goodsId);
+
+        if (order != null) {//秒杀成功
+            return order.getOrderId();
+        } else {
+            boolean isOver = goodsInit.goodsOver(goodsId);
+            if (!isOver) {//此商品的秒杀还没结束，返回处理中
+                return 0;
+            }
+
+            //此商品的秒杀已经结束，但是可能订单还在生成中
+            //获取所有的秒杀订单, 判断订单数量和参与秒杀的商品数量
+            List<SeckillOrder> orders = seckillOrderDao.getAllSecKillOrdersByGoodsId(goodsId);
+            if (orders == null || orders.size() < goodsInit.acquireGoodsStockOrigin(goodsId)) {
+                return 0;//订单还在生成中
+            }
+            //判断是否有此用户的订单
+            SeckillOrder o = fetchOrderByUserId(orders, userId);
+            if (o != null) {//如果有，则说明秒杀成功
+                return o.getOrderId();
+            } else {//秒杀失败
+                return -1;
+            }
+        }
+    }
+
+    private SeckillOrder fetchOrderByUserId(List<SeckillOrder> orders, long userId) {
+        if (orders == null || orders.size() <= 0) {
+            return null;
+        }
+        for (SeckillOrder order : orders) {
+            if (order.getUserId().equals(userId)) {
+                return order;
+            }
+        }
+        return null;
     }
 }

@@ -70,4 +70,5 @@ public interface SeckillOrderDao {
      */
     SeckillOrder getOrderByUserIdAndGoodsId(@Param("userId") Long userId, @Param("goodsId") Long goodsId);
 
+    List<SeckillOrder> getAllSecKillOrdersByGoodsId(long goodsId);
 }

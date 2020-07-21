@@ -29,6 +29,7 @@ public class GoodsInit implements CommandLineRunner {
     private CacheService cacheService;
 
     private static final Map<Long, Boolean> OVER_MAP = new ConcurrentHashMap<Long, Boolean>();
+    private static Map<Long, GoodsVO> GOODS_MAP;
 
     @Override
     public void run(String... args) throws Exception {
@@ -43,8 +44,8 @@ public class GoodsInit implements CommandLineRunner {
             OVER_MAP.put(s.getId(), Boolean.FALSE);
         });
 
-        goodsVOS.stream().collect(Collectors.toMap(keyMapper -> keyMapper.getId(), valueMapper -> valueMapper));
-
+        final Map<Long, GoodsVO> collect = goodsVOS.stream().collect(Collectors.toMap(keyMapper -> keyMapper.getId(), valueMapper -> valueMapper));
+        GOODS_MAP = collect;
 
     }
 
@@ -55,5 +56,14 @@ public class GoodsInit implements CommandLineRunner {
 
     public void flip2Over(Long goodsId) {
         OVER_MAP.put(goodsId, Boolean.TRUE);
+    }
+
+    public long acquireGoodsStockOrigin(long goodsId) {
+        final GoodsVO goodsVO = GOODS_MAP.get(goodsId);
+        if (null != goodsVO) {
+            return goodsVO.getGoodsStock();
+        }
+
+        return -1;
     }
 }

@@ -17,5 +17,12 @@
         where goods_id = #{goodsId} and user_id = #{userId} limit 1
     </select>
 
+    <select id="getAllSecKillOrdersByGoodsId" resultMap="SeckillOrderMap">
+        select
+          id, user_id, order_id, goods_id
+        from seckill.seckill_order
+        where goods_id = #{goodsId}
+    </select>
+
 
 </mapper>

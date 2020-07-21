@@ -36,7 +36,7 @@ public class RabbitMQConfig {
 
     @Bean
     Binding binding(TopicExchange exchange) {
-        return BindingBuilder.bind(secKillQueue()).to(exchange).with("tarbitrary.#");
+        return BindingBuilder.bind(topicQueue()).to(exchange).with("tarbitrary.#");
     }
 
     @Bean
