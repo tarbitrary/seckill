@@ -1,19 +1,12 @@
 package net.xicp.tarbitrary.seckill.redis;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import net.xicp.tarbitrary.seckill.cache.CacheService;
 import net.xicp.tarbitrary.seckill.cache.KeyPrefix;
+import net.xicp.tarbitrary.seckill.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author tarbitrary
@@ -23,19 +16,6 @@ public class RedisCacheServiceImpl implements CacheService {
     @Autowired
     private JedisPool jedisPool;
 
-    private static final Set<Class> PRIMITIVE_TYPE_WRAPPED_SET = new HashSet<Class>() {
-        {
-            add(Byte.class);
-            add(Short.class);
-            add(Integer.class);
-            add(Long.class);
-            add(Float.class);
-            add(Double.class);
-            add(Boolean.class);
-            add(Character.class);
-            add(Void.class);
-        }
-    };
 
     @Override
     public <T> boolean set(KeyPrefix prefix, String key, T value) {
@@ -50,7 +30,7 @@ public class RedisCacheServiceImpl implements CacheService {
                     value.getClass();
             resource = jedisPool.getResource();
             String realKey = prefix.buildKey(key);
-            String realVal = bean2String(value);
+            String realVal = BeanUtil.bean2String(value);
 
             if (null == realVal || realVal.length() <= 0) {
                 return false;
@@ -73,19 +53,6 @@ public class RedisCacheServiceImpl implements CacheService {
         }
     }
 
-    private <T> String bean2String(T value) {
-        final Class<?> aClass = value.getClass();
-        if (String.class == aClass) {
-            return (String) value;
-        }
-
-        if (isPrimitiveWrapped(value)) {
-            return "" + value;
-        }
-
-        return JSON.toJSONString(value);
-    }
-
     private void returnToPool(Jedis resource) {
         if (null != resource) {
             resource.close();
@@ -101,7 +68,7 @@ public class RedisCacheServiceImpl implements CacheService {
             final String realKey =
                     prefix.buildKey(key);
             final String sResult = resource.get(realKey);
-            T result = string2Bean(sResult, t);
+            T result = BeanUtil.string2Bean(sResult, t);
             return result;
 
         } finally {
@@ -110,39 +77,6 @@ public class RedisCacheServiceImpl implements CacheService {
     }
 
 
-    private <T> T string2Bean(String sResult, Class<T> t) {
-        if (sResult == null || sResult.length() <= 0 || t == null) {
-            return null;
-        }
-
-        if (t == String.class) {
-            return (T) sResult;
-        }
-
-        if (isPrimitiveWrapped(t)) {
-            try {
-                final Constructor<T> constructor = t.getConstructor(String.class);
-                final Method valueOf = t.getMethod("valueOf", String.class);
-                final Object invoke = valueOf.invoke(null, sResult);
-
-
-                return (T) invoke;
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        final JSONObject jsonObject = JSON.parseObject(sResult);
-
-        final T result = JSONObject.toJavaObject(jsonObject, t);
-
-        return result;
-    }
 
     @Override
     public boolean exists(KeyPrefix prefix, String key) {
@@ -172,14 +106,6 @@ public class RedisCacheServiceImpl implements CacheService {
     }
 
 
-    private <T> boolean isPrimitiveWrapped(T t) {
-        return isPrimitiveWrapped(t.getClass());
-    }
-
-    private <T> boolean isPrimitiveWrapped(Class<T> t) {
-
-        return PRIMITIVE_TYPE_WRAPPED_SET.contains(t);
-    }
 
     @Override
     public Long incr(KeyPrefix prefix, String key) {

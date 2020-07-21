@@ -16,10 +16,16 @@ public class RabbitMQConfig {
     public static final String topicExchangeName = "spring-boot-exchange";
 
     public static final String queueName = "spring-boot";
+    public static final String SEC_KILL_QUEUE_NAME = "sec-kill-queue-name";
 
     @Bean
     Queue topicQueue() {
         return new Queue(queueName, false);
+    }
+
+    @Bean
+    Queue secKillQueue() {
+        return new Queue(SEC_KILL_QUEUE_NAME, true);
     }
 
     @Bean
@@ -29,8 +35,8 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("tarbitrary.#");
+    Binding binding(TopicExchange exchange) {
+        return BindingBuilder.bind(secKillQueue()).to(exchange).with("tarbitrary.#");
     }
 
     @Bean
