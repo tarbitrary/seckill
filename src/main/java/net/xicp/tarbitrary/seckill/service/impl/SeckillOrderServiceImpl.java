@@ -140,6 +140,7 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
         return orderInfo;
     }
 
+    @Override
     public long getSecKillResult(long userId, long goodsId) {
         final SeckillOrder order = seckillOrderDao.getOrderByUserIdAndGoodsId(userId, goodsId);
 

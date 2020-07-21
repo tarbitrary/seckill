@@ -167,5 +167,12 @@ public class SeckillOrderController {
         return Result.success(0);
     }
 
+    @RequestMapping("result")
+    @ResponseBody
+    public Result<Long> getResult(TradeUser tradeUser, @RequestParam("goodsId") long goodsId) {
+        long result = seckillOrderService.getSecKillResult(tradeUser.getId(), goodsId);
+        return Result.success(result);
+    }
+
 
 }

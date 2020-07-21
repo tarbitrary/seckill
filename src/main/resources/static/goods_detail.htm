@@ -73,7 +73,7 @@
     function getSecKillResult(goodsId) {
         g_showLoading();
         $.ajax({
-            url: "/secKill/result",
+            url: "/seckillOrder/result",
             type: "GET",
             data: {
                 goodsId: goodsId,
@@ -109,7 +109,7 @@
 
     function doseckill() {
         $.ajax({
-            url: "/seckillOrder/doSeckill1WithMQ",
+            url: "/seckillOrder/doSeckillWithMQ",
             type: "POST",
             data: {
                 goodsId: $("#goodsId").val(),

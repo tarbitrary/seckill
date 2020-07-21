@@ -59,4 +59,6 @@ public interface SeckillOrderService {
     SeckillOrder querySeckillOrderByUserIdAndGoodsId(Long id, Long goodsId);
 
     OrderInfo doSeckill(TradeUser user, GoodsVO goodsInfo);
+
+    long getSecKillResult(long userId, long goodsId);
 }
