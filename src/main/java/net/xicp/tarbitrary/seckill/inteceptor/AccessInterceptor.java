@@ -74,12 +74,13 @@ public class AccessInterceptor implements HandlerInterceptor {
         final Integer counts = cacheService.get(accessKey, key, Integer.class);
         if (null == counts) {
             cacheService.set(accessKey, key, 1);
-        } else {
-            if (counts >= accessLimit.maxCount()) {
-                //限流操作
-                toAccessLimitPage(request, response, tradeUser);
-                return false;
-            }
+            return true;
+        }
+
+        if (counts >= accessLimit.maxCount()) {
+            //限流操作
+            toAccessLimitPage(request, response, tradeUser);
+            return false;
         }
 
 
