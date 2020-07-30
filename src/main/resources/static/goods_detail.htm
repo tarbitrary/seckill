@@ -48,7 +48,7 @@
                         <button class="btn btn-primary btn-block" type="submit" id="buyButton">立即秒杀</button>
                         <input type="hidden" name="goodsId"  id="goodsId" />
                     </form>-->
-                <button class="btn btn-primary btn-block" type="button" id="buyButton" onclick="doseckill()">立即秒杀
+                <button class="btn btn-primary btn-block" type="button" id="buyButton" onclick="getSeckillPath()">立即秒杀
                 </button>
                 <input type="hidden" name="goodsId" id="goodsId"/>
             </td>
@@ -107,9 +107,31 @@
 
     }
 
-    function doseckill() {
+    function getSeckillPath() {
         $.ajax({
-            url: "/seckillOrder/doSeckillWithMQ",
+            url: "/seckillOrder/getPath",
+            type: "POST",
+            data: {
+                goodsId: $("#goodsId").val(),
+            },
+            success: function (data) {
+                if (data.code == 0) {
+                    // window.location.href = "/order_detail.htm?orderId=" + data.data.id;
+                    doseckill(data.data);
+                } else {
+                    layer.msg(data.msg);
+                }
+            },
+            error: function () {
+                layer.msg("客户端请求有误");
+            }
+        });
+
+    }
+
+    function doseckill(path) {
+        $.ajax({
+            url: "/seckillOrder/" + path + "/doSeckillWithMQ",
             type: "POST",
             data: {
                 goodsId: $("#goodsId").val(),

@@ -16,12 +16,10 @@ import net.xicp.tarbitrary.seckill.service.SeckillOrderService;
 import net.xicp.tarbitrary.seckill.vo.GoodsVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.UUID;
 
 /**
  * (SeckillOrder)表控制层
@@ -133,12 +131,16 @@ public class SeckillOrderController {
 
     }
 
-    @RequestMapping("/doSeckillWithMQ")
+    @RequestMapping("/{path}/doSeckillWithMQ")
     @AccessLimit(seconds = 10, maxCount = 100)
     @ResponseBody
-    public Result<Integer> doSeckillWithMQ(TradeUser tradeUser, @RequestParam("goodsId") long goodsId,
+    public Result<Integer> doSeckillWithMQ(TradeUser tradeUser, @PathVariable("path") String path, @RequestParam("goodsId") long goodsId,
                                            Model model) {
+        final boolean isValidRequest = cacheService.exists(SeckillKey.URL_CACHE, tradeUser.getId() + "_" + goodsId);
 
+        if (!isValidRequest) {
+            return Result.error(CodeMsg.REQUEST_ILLEGAL);
+        }
 
         final boolean goodsOver = goodsInit.goodsOver(goodsId);
         if (goodsOver) {
@@ -172,6 +174,15 @@ public class SeckillOrderController {
     public Result<Long> getResult(TradeUser tradeUser, @RequestParam("goodsId") long goodsId) {
         long result = seckillOrderService.getSecKillResult(tradeUser.getId(), goodsId);
         return Result.success(result);
+    }
+
+    @RequestMapping("/getPath")
+    @ResponseBody
+    public Result<String> generateMiddlePath(TradeUser tradeUser, @RequestParam("goodsId") long goodsId) {
+        final UUID uuid = UUID.randomUUID();
+        String url = uuid.toString();
+        cacheService.set(SeckillKey.URL_CACHE, tradeUser.getId() + "_" + goodsId, url);
+        return Result.success(url);
     }
 
 
