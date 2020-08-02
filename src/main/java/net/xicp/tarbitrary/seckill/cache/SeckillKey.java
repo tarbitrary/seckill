@@ -14,4 +14,5 @@ public class SeckillKey extends BaseKeyPrefix {
     public static final SeckillKey USER_INFO = new SeckillKey(60 * 30, "userinfo");
     public static final SeckillKey GOODS_CACHE = new SeckillKey(0, "goodsCache");
     public static final SeckillKey URL_CACHE = new SeckillKey(60, "urlCache");
+    public static final SeckillKey IMAGE_CACHE = new SeckillKey(300, "imageCache");
 }

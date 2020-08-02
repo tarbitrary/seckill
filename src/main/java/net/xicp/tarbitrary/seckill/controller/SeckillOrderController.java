@@ -135,12 +135,20 @@ public class SeckillOrderController {
     @AccessLimit(seconds = 10, maxCount = 100)
     @ResponseBody
     public Result<Integer> doSeckillWithMQ(TradeUser tradeUser, @PathVariable("path") String path, @RequestParam("goodsId") long goodsId,
-                                           Model model) {
+                                           @RequestParam("verifyCode") int verifyCode, Model model) {
         final boolean isValidRequest = cacheService.exists(SeckillKey.URL_CACHE, tradeUser.getId() + "_" + goodsId);
 
         if (!isValidRequest) {
             return Result.error(CodeMsg.REQUEST_ILLEGAL);
         }
+
+        int imageResult = cacheService.get(SeckillKey.IMAGE_CACHE, tradeUser.getId() + "," + goodsId, Integer.class);
+        if (verifyCode != imageResult) {
+            return Result.error(CodeMsg.VERIFY_CODE_ERROR);
+        }
+
+        cacheService.delete(SeckillKey.IMAGE_CACHE, tradeUser.getId() + "," + goodsId);
+
 
         final boolean goodsOver = goodsInit.goodsOver(goodsId);
         if (goodsOver) {
